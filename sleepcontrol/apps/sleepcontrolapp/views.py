@@ -1,36 +1,40 @@
 from django.http import HttpResponseBadRequest
-from django.shortcuts import redirect
-from django.views.generic import ListView, FormView, DeleteView
+from django.shortcuts import render, redirect
 
 from apps.sleepcontrolapp.forms import SleepForms
 from apps.sleepcontrolapp.models import SleepPoint
 
 
-class GetDataFromDb(ListView):
-    queryset = SleepPoint.objects.all()
-    template_name = "sleepcontrolapp/get_table.html"
-    context_object_name = "data_from_db"
+def get_data_from_db(request):
+    data_from_db = SleepPoint.objects.order_by("date", "time")
+    return render(
+        request,
+        "sleepcontrolapp/get_table.html",
+        {"data_from_db": data_from_db},
+    )
 
-    def get_queryset(self):
-        return self.queryset.order_by("date", "time")
 
-
-class SleepFormsViews(FormView):
-    template_name = "sleepcontrolapp/form_for_data.html"
-    form_class = SleepForms
-    success_url = "/get/"
-
-    def form_valid(self, form):
-        if SleepPoint.objects.filter(**form.cleaned_data):
+def add_data_to_db(request):
+    form = SleepForms()
+    if request.method == "POST":
+        if SleepPoint.objects.filter(
+            event=request.POST["event"],
+            date=request.POST["date"],
+            time=request.POST["time"],
+        ):
             return HttpResponseBadRequest("Запись уже существует")
-        SleepPoint.objects.create(**form.cleaned_data)
-        return redirect(self.get_success_url())
+        SleepPoint.objects.create(
+            event=request.POST["event"],
+            date=request.POST["date"],
+            time=request.POST["time"],
+        )
+        return redirect("main")
+    return render(
+        request, "sleepcontrolapp/form_for_data.html", {"form": form}
+    )
 
 
-class DeleteDataFromDb(DeleteView):
-    model = SleepPoint
-    success_url = "/get/"
-
-    def get_object(self, queryset=None):
-        pk = self.request.POST["pk"]
-        return self.get_queryset().get(pk=pk)
+def delete_data_from_db(request):
+    data_for_delete = SleepPoint.objects.get(pk=request.POST["pk"])
+    data_for_delete.delete()
+    return redirect("main")

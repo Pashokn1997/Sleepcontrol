@@ -1,9 +1,8 @@
+from django.test import TestCase
 from django.urls import reverse
 
-from django.test import TestCase
-from django.test import Client
-
 from apps.sleepcontrolapp.models import SleepPoint
+from django.test import Client
 
 
 class SleepControlTest(TestCase):
