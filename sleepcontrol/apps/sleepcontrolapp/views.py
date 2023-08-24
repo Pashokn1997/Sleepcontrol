@@ -1,4 +1,3 @@
-
 from rest_framework import generics
 from apps.sleepcontrolapp.models import SleepPoint
 from apps.sleepcontrolapp.serializers import SleepPointGetAddSerializer

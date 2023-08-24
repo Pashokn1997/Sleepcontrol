@@ -9,8 +9,12 @@ from apps.sleepcontrolapp.models import SleepPoint
 class SleepControlTest(TestCase):
     def setUp(self) -> None:
         self.client = Client()
-        SleepPoint.objects.create(event="UP", date="2023-02-21", time="08:20", pk=100)
-        SleepPoint.objects.create(event="DOWN", date="2023-02-21", time="23:40", pk=101)
+        SleepPoint.objects.create(
+            event="UP", date="2023-02-21", time="08:20", pk=100
+        )
+        SleepPoint.objects.create(
+            event="DOWN", date="2023-02-21", time="23:40", pk=101
+        )
 
     def test_get(self):
         response = self.client.get(reverse("main"))

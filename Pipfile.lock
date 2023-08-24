@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bad07a73ba1702046910888a2a0ac2a7c8464004bda024b364f7a3df0487b790"
+            "sha256": "376a5f3c82825deaf9b87f26c4600ab89683a646c320c44730aeffc8f837c3ea"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -112,6 +112,15 @@
             "markers": "python_version >= '3.6'",
             "version": "==3.14.0"
         },
+        "drf-yasg": {
+            "hashes": [
+                "sha256:4c3b93068b3dfca6969ab111155e4dd6f7b2d680b98778de8fd460b7837bdb0d",
+                "sha256:f85642072c35e684356475781b7ecf5d218fff2c6185c040664dd49f0a4be181"
+            ],
+            "index": "pypi",
+            "markers": "python_version >= '3.6'",
+            "version": "==1.21.7"
+        },
         "filelock": {
             "hashes": [
                 "sha256:002740518d8aa59a26b0c76e10fb8c6e15eae825d34b6fdf670333fd7b938d81",
@@ -136,6 +145,14 @@
             ],
             "markers": "python_version >= '3.8'",
             "version": "==2.5.27"
+        },
+        "inflection": {
+            "hashes": [
+                "sha256:1a29730d366e996aaacffb2f1f1cb9593dc38e2ddd30c91250c6dde09ea9b417",
+                "sha256:f38b2b640938a4f35ade69ac3d053042959b62a0f1076a5bbaa1b9526605a8a2"
+            ],
+            "markers": "python_version >= '3.5'",
+            "version": "==0.5.1"
         },
         "mccabe": {
             "hashes": [
@@ -320,6 +337,14 @@
             ],
             "markers": "sys_platform == 'win32'",
             "version": "==2023.3"
+        },
+        "uritemplate": {
+            "hashes": [
+                "sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0",
+                "sha256:830c08b8d99bdd312ea4ead05994a38e8936266f84b9a7878232db50b044e02e"
+            ],
+            "markers": "python_version >= '3.6'",
+            "version": "==4.1.1"
         },
         "virtualenv": {
             "hashes": [

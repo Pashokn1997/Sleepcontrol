@@ -48,7 +48,11 @@ urlpatterns = [
         schema_view.with_ui("swagger", cache_timeout=0),
         name="schema-swagger-ui",
     ),
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path(
+        "redoc/",
+        schema_view.with_ui("redoc", cache_timeout=0),
+        name="schema-redoc",
+    ),
     path("admin/", admin.site.urls),
     path("get/", SleepPointListCreate.as_view(), name="main"),
     path("delete/<int:pk>", SleepPointDelete.as_view(), name="delete"),
