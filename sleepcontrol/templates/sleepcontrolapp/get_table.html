@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    
+    <table cellspacing="20px">
+        {% for data in data_from_db%}
+        <form action="/delete/" method="post">
+            {% csrf_token %}
+            <tr><td>{{ data.get_event_display }}</td>
+                <td>{{ data.date|date:'Y-m-d' }}</td>
+                <td>{{ data.time|time:'H:i' }}</td>
+                <td><input type="hidden" value="{{ data.pk }}" name="pk"></td>
+                <td><input type="submit" value="Удалить"></td>
+            </tr>
+        </form>
+        {% endfor %}
+    </table>
+    <a href="/add" style="padding-left: 150px">Добавить</a>
+</body>
+</html>

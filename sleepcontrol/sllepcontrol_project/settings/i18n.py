@@ -1,0 +1,7 @@
+LANGUAGE_CODE = "ru-RU"
+
+USE_I18N = True
+
+SHORT_DATE_FORMAT = True
+
+DATE_FORMAT = "d E Y"
