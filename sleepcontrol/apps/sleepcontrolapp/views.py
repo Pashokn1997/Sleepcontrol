@@ -1,36 +1,48 @@
 from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect
-from django.views.generic import ListView, FormView, DeleteView
+from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.sleepcontrolapp.forms import SleepForms
 from apps.sleepcontrolapp.models import SleepPoint
 
 
-class GetDataFromDb(ListView):
-    queryset = SleepPoint.objects.all()
+class SleepPointGetDelete(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = "sleepcontrolapp/get_table.html"
-    context_object_name = "data_from_db"
 
-    def get_queryset(self):
-        return self.queryset.order_by("date", "time")
+    def get(self, request):
+        data_from_db = SleepPoint.objects.order_by("date", "time")
+        return Response({"data_from_db": data_from_db})
+
+    def post(self, request):
+        data_for_delete = SleepPoint.objects.get(pk=request.POST["pk"])
+        data_for_delete.delete()
+        return redirect("main")
 
 
-class SleepFormsViews(FormView):
+class SleepPointAdd(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
     template_name = "sleepcontrolapp/form_for_data.html"
-    form_class = SleepForms
-    success_url = "/get/"
 
-    def form_valid(self, form):
-        if SleepPoint.objects.filter(**form.cleaned_data):
-            return HttpResponseBadRequest("Запись уже существует")
-        SleepPoint.objects.create(**form.cleaned_data)
-        return redirect(self.get_success_url())
+    def get(self, request):
+        form = SleepForms()
+        return Response({"form": form})
 
-
-class DeleteDataFromDb(DeleteView):
-    model = SleepPoint
-    success_url = "/get/"
-
-    def get_object(self, queryset=None):
-        pk = self.request.POST["pk"]
-        return self.get_queryset().get(pk=pk)
+    def post(self, request):
+        form = SleepForms()
+        if request.method == "POST":
+            if SleepPoint.objects.filter(
+                event=request.POST["event"],
+                date=request.POST["date"],
+                time=request.POST["time"],
+            ):
+                return HttpResponseBadRequest
+            SleepPoint.objects.create(
+                event=request.POST["event"],
+                date=request.POST["date"],
+                time=request.POST["time"],
+            )
+            return redirect("main")
+        return Response({"form": form})

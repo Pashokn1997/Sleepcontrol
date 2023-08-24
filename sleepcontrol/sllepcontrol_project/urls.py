@@ -17,15 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from apps.sleepcontrolapp.views import (
-    GetDataFromDb,
-    SleepFormsViews,
-    DeleteDataFromDb,
-)
+from apps.sleepcontrolapp.views import SleepPointGetDelete, SleepPointAdd
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("get/", GetDataFromDb.as_view(), name="main"),
-    path("add/", SleepFormsViews.as_view(), name="add"),
-    path("delete/", DeleteDataFromDb.as_view(), name="delete"),
+    path("get/", SleepPointGetDelete.as_view(), name="main"),
+    path("add/", SleepPointAdd.as_view(), name="add"),
+    path("delete/", SleepPointGetDelete.as_view(), name="delete"),
 ]
