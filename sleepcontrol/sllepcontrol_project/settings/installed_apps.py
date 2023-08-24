@@ -7,4 +7,5 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "apps.sleepcontrolapp",
     "rest_framework",
+    "drf_yasg",
 ]

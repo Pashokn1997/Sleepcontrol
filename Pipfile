@@ -11,6 +11,7 @@ django = "*"
 django-split-settings = "*"
 black = "*"
 djangorestframework = "*"
+drf-yasg = "*"
 
 [dev-packages]
 
