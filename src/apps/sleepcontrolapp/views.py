@@ -1,12 +1,17 @@
+from apps.sleepcontrolapp.services.service import (
+    get_objects_from_db,
+    check_existed_data,
+    create_new_object,
+    delete_object,
+)
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 
 from apps.sleepcontrolapp.forms import SleepForms
-from apps.sleepcontrolapp.models import SleepPoint
 
 
 def get_data_from_db(request):
-    data_from_db = SleepPoint.objects.order_by("date", "time")
+    data_from_db = get_objects_from_db()
     return render(
         request,
         "sleepcontrolapp/get_table.html",
@@ -17,13 +22,9 @@ def get_data_from_db(request):
 def add_data_to_db(request):
     form = SleepForms()
     if request.method == "POST":
-        if SleepPoint.objects.filter(
-            event=request.POST["event"],
-            date=request.POST["date"],
-            time=request.POST["time"],
-        ):
+        if check_existed_data(request.POST):
             return HttpResponseBadRequest("Запись уже существует")
-        SleepPoint.objects.create(
+        create_new_object(
             event=request.POST["event"],
             date=request.POST["date"],
             time=request.POST["time"],
@@ -35,6 +36,5 @@ def add_data_to_db(request):
 
 
 def delete_data_from_db(request):
-    data_for_delete = SleepPoint.objects.get(pk=request.POST["pk"])
-    data_for_delete.delete()
+    delete_object(pk=request.POST["pk"])
     return redirect("main")
