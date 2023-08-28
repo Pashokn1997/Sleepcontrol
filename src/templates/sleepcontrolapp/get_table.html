@@ -7,7 +7,7 @@
 <body>
     
     <table cellspacing="20px">
-        {% for data in data_from_db%}
+        {% for data in events%}
         <form action="/delete/" method="post">
             {% csrf_token %}
             <tr><td>{{ data.get_event_display }}</td>
