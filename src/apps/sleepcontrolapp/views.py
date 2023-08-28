@@ -1,8 +1,8 @@
 from apps.sleepcontrolapp.service import (
-    get_events_from_db,
+    get_events,
     events_exists,
     create_event,
-    delete_object,
+    delete_event,
 )
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
@@ -10,8 +10,8 @@ from django.shortcuts import render, redirect
 from apps.sleepcontrolapp.forms import SleepForms
 
 
-def get_events(request):
-    events = get_events_from_db()
+def get_data(request):
+    events = get_events()
     return render(
         request,
         "sleepcontrolapp/get_table.html",
@@ -38,6 +38,6 @@ def add_event(request):
     )
 
 
-def delete_events(request):
-    delete_object(pk=request.POST["pk"])
+def delete_data(request):
+    delete_event(pk=request.POST["pk"])
     return redirect("main")
