@@ -22,10 +22,13 @@ def get_data(request):
 def add_event(request):
     if request.method == "POST":
         form = SleepForms(request.POST)
-        if events_exists(event=request.POST['event'], date=request.POST['date'], time=request.POST['time']):
+        if events_exists(
+            event=request.POST["event"],
+            date=request.POST["date"],
+            time=request.POST["time"],
+        ):
             return HttpResponseBadRequest("Запись уже существует")
         if form.is_valid():
-            print(form.cleaned_data)
             create_event(
                 event=form.cleaned_data["event"],
                 date=form.cleaned_data["date"],

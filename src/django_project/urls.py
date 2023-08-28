@@ -18,14 +18,14 @@ from django.contrib import admin
 from django.urls import path
 
 from apps.sleepcontrolapp.views import (
-    get_events,
+    get_data,
     add_event,
-    delete_events,
+    delete_data,
 )
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("get/", get_events, name="main"),
+    path("get/", get_data, name="main"),
     path("add/", add_event, name="add"),
-    path("delete/", delete_events, name="delete"),
+    path("delete/", delete_data, name="delete"),
 ]
