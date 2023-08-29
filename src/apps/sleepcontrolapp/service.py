@@ -1,12 +1,17 @@
+from datetime import datetime
+
 from apps.sleepcontrolapp.models import SleepPoint
+from django.db.models.query import QuerySet
 
 
-def get_events():
-    data_from_db = SleepPoint.objects.order_by("date", "time")
-    return data_from_db
+def get_events() -> QuerySet[SleepPoint]:
+    queryset = SleepPoint.objects.all().order_by("date", "time")
+    return queryset
 
 
-def events_exists(event: str, date: str, time: str) -> bool:
+def events_exists(
+    event: str, date: datetime.date, time: datetime.time
+) -> bool:
     is_exist = SleepPoint.objects.filter(
         event=event,
         date=date,
@@ -15,9 +20,12 @@ def events_exists(event: str, date: str, time: str) -> bool:
     return is_exist
 
 
-def create_event(event: str, date: str, time: str) -> None:
-    SleepPoint.objects.create(event=event, date=date, time=time)
+def create_event(
+    event: str, date: datetime.date, time: datetime.time
+) -> SleepPoint:
+    event = SleepPoint.objects.create(event=event, date=date, time=time)
+    return event
 
 
 def delete_event(pk: int) -> None:
-    SleepPoint.objects.get(pk=pk).delete()
+    SleepPoint.objects.filter(pk=pk).delete()

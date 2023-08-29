@@ -1,17 +1,12 @@
-from apps.sleepcontrolapp.service import (
-    get_events,
-    events_exists,
-    create_event,
-    delete_event,
-)
+from apps.sleepcontrolapp import service
 from django.http import HttpResponseBadRequest
 from django.shortcuts import render, redirect
 
 from apps.sleepcontrolapp.forms import SleepForms
 
 
-def get_data(request):
-    events = get_events()
+def get_events(request):
+    events = service.get_events()
     return render(
         request,
         "sleepcontrolapp/get_table.html",
@@ -20,27 +15,19 @@ def get_data(request):
 
 
 def add_event(request):
+    form = SleepForms()
     if request.method == "POST":
         form = SleepForms(request.POST)
-        if events_exists(
-            event=request.POST["event"],
-            date=request.POST["date"],
-            time=request.POST["time"],
-        ):
-            return HttpResponseBadRequest("Запись уже существует")
         if form.is_valid():
-            create_event(
-                event=form.cleaned_data["event"],
-                date=form.cleaned_data["date"],
-                time=form.cleaned_data["time"],
-            )
-        return redirect("main")
-    form = SleepForms()
+            if service.events_exists(**form.cleaned_data):
+                return HttpResponseBadRequest("Запись уже существует")
+            service.create_event(**form.cleaned_data)
+            return redirect("main")
     return render(
         request, "sleepcontrolapp/form_for_data.html", {"form": form}
     )
 
 
-def delete_data(request):
-    delete_event(pk=request.POST["pk"])
+def delete_event(request):
+    service.delete_event(pk=request.POST["pk"])
     return redirect("main")

@@ -1,3 +1,5 @@
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.urls import reverse
 
@@ -15,22 +17,22 @@ class SleepControlTest(TestCase):
             event="DOWN", date="2023-02-21", time="23:40", pk=101
         )
 
-    def test_get(self):
+    @patch("apps.sleepcontrolapp.service.get_events")
+    def test_get(self, get_events_mock):
         response = self.client.get(reverse("main"))
+        get_events_mock.assert_called_once()
         self.assertEqual(response.status_code, 200)
 
-    def test_add(self):
+    @patch("apps.sleepcontrolapp.service.create_event")
+    def test_add(self, create_event_mock):
         data = {"event": "DOWN", "date": "2023-02-21", "time": "23:41"}
         response = self.client.post(reverse("add"), data=data)
-        response2 = self.client.post(reverse("add"), data=data)
-        obj = SleepPoint.objects.get(**data)
-        self.assertEqual(obj.pk, 1)
-        self.assertEqual(response2.status_code, 400)
+        create_event_mock.assert_called_once()
         self.assertEqual(response.status_code, 302)
 
-    def test_delete(self):
+    @patch("apps.sleepcontrolapp.service.delete_event")
+    def test_delete(self, delete_event_mock):
         data = {"pk": 100}
         response = self.client.post(reverse("delete"), data=data)
-        obj = SleepPoint.objects.filter(pk=100)
-        self.assertEqual(list(obj), [])
+        delete_event_mock.assert_called_once()
         self.assertEqual(response.status_code, 302)

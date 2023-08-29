@@ -10,6 +10,7 @@ pre-commit = "*"
 django = "*"
 django-split-settings = "*"
 black = "*"
+time = "*"
 
 [dev-packages]
 
