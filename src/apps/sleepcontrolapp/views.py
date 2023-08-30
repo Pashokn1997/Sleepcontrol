@@ -29,5 +29,5 @@ def add_event(request):
 
 
 def delete_event(request):
-    service.delete_event(pk=request.POST["pk"])
+    service.delete_event(pk=int(request.POST["pk"]))
     return redirect("main")
