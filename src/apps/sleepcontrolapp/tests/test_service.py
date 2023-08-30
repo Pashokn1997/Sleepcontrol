@@ -3,15 +3,15 @@ import datetime
 from apps.sleepcontrolapp.service import (
     create_event,
     delete_event,
-    events_exists,
+    event_exists,
 )
 from django.test import TestCase
 
 from apps.sleepcontrolapp.models import SleepPoint
 
 
-class CreateTest(TestCase):
-    def test_create_success(self):
+class CreateEventTest(TestCase):
+    def test_event_created(self):
         event = "UP"
         date = datetime.date(2020, 8, 10)
         time = datetime.time(20, 12)
@@ -19,31 +19,31 @@ class CreateTest(TestCase):
         same_obj = SleepPoint.objects.get(pk=obj.pk)
         self.assertEqual(obj, same_obj)
 
-    def test_create_true_parameters(self):
+    def test_events_attributes(self):
         event = "UP"
         date = datetime.date(2020, 8, 10)
         time = datetime.time(20, 12)
         obj = create_event(event=event, date=date, time=time)
         same_obj = SleepPoint.objects.get(pk=obj.pk)
-        self.assertEqual(event, same_obj.event)
-        self.assertEqual(date, same_obj.date)
-        self.assertEqual(time, same_obj.time)
+        self.assertEqual(same_obj.event, event)
+        self.assertEqual(same_obj.date, date)
+        self.assertEqual(same_obj.time, time)
 
-    def test_create_true_return_type(self):
+    def test_return_type(self):
         event = "UP"
         date = datetime.date(2020, 8, 10)
         time = datetime.time(20, 12)
         obj = create_event(event=event, date=date, time=time)
-        self.assertEqual(type(obj), SleepPoint)
+        self.assertIsInstance(obj, SleepPoint)
 
-    def test_create_true_return_parameters(self):
+    def test_return_object_attributes(self):
         event = "UP"
         date = datetime.date(2020, 8, 10)
         time = datetime.time(20, 12)
         obj = create_event(event=event, date=date, time=time)
-        self.assertEqual(event, obj.event)
-        self.assertEqual(date, obj.date)
-        self.assertEqual(time, obj.time)
+        self.assertEqual(obj.event, event)
+        self.assertEqual(obj.date, date)
+        self.assertEqual(obj.time, time)
 
 
 class ExistsTest(TestCase):
@@ -52,15 +52,15 @@ class ExistsTest(TestCase):
         date = datetime.date(2023, 2, 21)
         time = datetime.time(8, 20)
         SleepPoint.objects.create(event=event, date=date, time=time)
-        is_exist = events_exists(event=event, date=date, time=time)
-        self.assertEqual(is_exist, True)
+        is_exist = event_exists(event=event, date=date, time=time)
+        self.assertTrue(is_exist)
 
     def test_not_exists(self):
         event = "UP"
         date = datetime.date(2020, 2, 21)
         time = datetime.time(8, 20)
-        is_exist = events_exists(event=event, date=date, time=time)
-        self.assertEqual(is_exist, False)
+        is_exist = event_exists(event=event, date=date, time=time)
+        self.assertFalse(is_exist)
 
 
 class DeleteTest(TestCase):

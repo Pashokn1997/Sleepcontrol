@@ -9,9 +9,7 @@ def get_events() -> QuerySet[SleepPoint]:
     return queryset
 
 
-def events_exists(
-    event: str, date: datetime.date, time: datetime.time
-) -> bool:
+def event_exists(event: str, date: datetime.date, time: datetime.time) -> bool:
     is_exist = SleepPoint.objects.filter(
         event=event,
         date=date,

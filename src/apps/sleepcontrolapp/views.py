@@ -19,7 +19,7 @@ def add_event(request):
     if request.method == "POST":
         form = SleepForms(request.POST)
         if form.is_valid():
-            if service.events_exists(**form.cleaned_data):
+            if service.event_exists(**form.cleaned_data):
                 return HttpResponseBadRequest("Запись уже существует")
             service.create_event(**form.cleaned_data)
             return redirect("main")
